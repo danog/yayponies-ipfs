@@ -1,0 +1,3 @@
+[submodule "ypmirror"]
+	path = ypmirror
+	url = https://git.yayponies.pw/ypmirror.git
