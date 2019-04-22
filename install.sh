@@ -52,12 +52,11 @@ HTTP="    server {\n
 echo -e $HTTP > yp.conf
 sudo mv yp.conf /etc/nginx/conf.d/yp.conf
 sudo service nginx start
-sudo cp script.sh /usr/bin/yayponies-update.sh
 
-yayponies-update.sh $PWD localhost:8808
+./yayponies-update.sh $PWD localhost:8808
 
 crontab -l > /tmp/yayponies-cron
 sed -i '/yayponies-update/d' /tmp/yayponies-cron
-echo "*/10 * * * * /usr/bin/yayponies-update.sh $PWD localhost:8808" >> /tmp/yayponies-cron
+echo "* */10 * * * $PWD/yayponies-update.sh $PWD localhost:8808" >> /tmp/yayponies-cron
 crontab /tmp/yayponies-cron
 rm /tmp/yayponies-cron
