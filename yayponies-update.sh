@@ -6,9 +6,9 @@ git reset --hard
 git pull origin master
 
 for f in $(find . -type f -name '*.php'); do
-    curl "$2/$f" -so "$f"
-    mv "$f" "${f/php/html}"
+    curl "$2/$f" -so "${f/php/html}"
 done
+find . -type f -name '*.php' -exec rm {} +
 find . -type f -exec sed 's/\.php/\.html/g' -i {} +
 
 cd ..
