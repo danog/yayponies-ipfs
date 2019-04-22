@@ -1,16 +1,15 @@
 #!/bin/bash
-[ $(id -u) -ne 0 ] { echo "This script has to be run as root"; exit 1; }
 
-service nginx stop
-rm /etc/nginx/sites-enabled/default
-rm /etc/nginx/conf.d/default
+sudo service nginx stop
+sudo rm -rf /etc/nginx/sites-enabled/default
+sudo rm -rf /etc/nginx/conf.d/default
 
 HTTP="    server {\n
-        listen       80 default_server;\n
-        listen       [::]:80 default_server;\n
-        server_name  $DOMAIN;\n
+        listen       8808 default_server;\n
+        listen       [::]:8808 default_server;\n
+        server_name  localhost;\n
         ssi on;\n
-        root         $PWD/yay;\n
+        root         $PWD/ypmirror;\n
         error_page 404 /sorry/404.php;\n
         error_page 403 /sorry/403.php;\n
         autoindex off;\n
@@ -23,11 +22,15 @@ HTTP="    server {\n
                 types { text/html php; }\n
         }       \n
     }"
-echo -e $HTTP > /etc/nginx/conf.d/yp.conf
-service nginx start
+echo -e $HTTP > yp.conf
+sudo mv yp.conf /etc/nginx/conf.d/yp.conf
+sudo service nginx start
+sudo cp script.sh /usr/bin/yayponies-update.sh
 
-co script.sh /usr/bin/yayponies-update.sh
+yayponies-update.sh $PWD localhost:8808
+
 crontab -l > /tmp/yayponies-cron
+sed -i '/yayponies-update/d' /tmp/yayponies-cron
 echo "*/10 * * * * /usr/bin/yayponies-update.sh $PWD localhost:8808" >> /tmp/yayponies-cron
 crontab /tmp/yayponies-cron
 rm /tmp/yayponies-cron

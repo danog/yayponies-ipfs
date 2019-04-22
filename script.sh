@@ -4,7 +4,8 @@ git reset --hard
 git pull origin master
 
 for f in $(find . -type f -name '*.php'); do
-    curl "$2/$f" -so $f
+    curl "$2/$f" -so "$f"
+    mv "$f" "${f/php/html}"
 done
 
 cd ..
