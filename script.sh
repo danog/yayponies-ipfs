@@ -1,5 +1,7 @@
 #!/bin/bash
-cd $1/ypmirror
+cd $1
+git pull origin master
+cd ypmirror
 git reset --hard
 git pull origin master
 
@@ -7,6 +9,7 @@ for f in $(find . -type f -name '*.php'); do
     curl "$2/$f" -so "$f"
     mv "$f" "${f/php/html}"
 done
+find . -type f -exec sed 's/\.php/\.html/g' -i {} +
 
 cd ..
 hash=$(ipfs name publish /ipfs/$(ipfs add -r ypmirror/ | sed '/ ypmirror$/!d;s/added //;s/ .*//g') | sed 's/:.*//g;s/Published to //g')
