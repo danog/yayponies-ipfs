@@ -1,5 +1,32 @@
 #!/bin/bash
 
+echo "Deploying YayPonies IPFS Mirror"
+echo ""
+
+which ipfs &> /dev/null || { echo "Install ipfs, first: https://docs.ipfs.io/introduction/install/" && exit 1; }
+
+echo "This script has only been tested on Debian Jessie and Ubuntu Trusty"
+echo "It will install a new IPFS mirror on a newly deployed system"
+echo "It SHOULD NOT BE USED ON MULTIPLE SITE CONFIGURATION"
+echo "IT SHOULD ALSO NOT BE USED IF PORT 8808 IS UNAVAILABLE"
+echo ""
+echo "This will install nginx from your distribution repository"
+echo "set configuration, cron task"
+echo "and finally start your mirror"
+echo ""
+echo "This program is distributed WITHOUT ANY WARRANTY"
+read -n1 -r -p "Press space or enter to continue, any other keys to cancel..." key
+
+if [ "$key" = '' ]; then
+    echo ""
+    echo "OK, Starting..."
+else
+    echo ""
+    echo "OK, Cancelling..."
+    exit 1
+fi
+
+
 sudo service nginx stop
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo rm -rf /etc/nginx/conf.d/default
