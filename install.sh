@@ -57,6 +57,6 @@ sudo service nginx start
 
 crontab -l > /tmp/yayponies-cron
 sed -i '/yayponies-update/d' /tmp/yayponies-cron
-echo "* */10 * * * $PWD/yayponies-update.sh $PWD localhost:8808" >> /tmp/yayponies-cron
+echo "0 */10 * * * $PWD/yayponies-update.sh $PWD localhost:8808" >> /tmp/yayponies-cron
 crontab /tmp/yayponies-cron
 rm /tmp/yayponies-cron
